@@ -19,13 +19,13 @@ class MyApp extends StatelessWidget {
           visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
         //home: MyHomePage(title: 'Make Leo Talk'),
-        home: SignInPage()
-        // home: Scaffold(
-        //   appBar: AppBar(
-        //     title: const Text('Wild Ones'),
-        //   ),
-        //     body:HomePageAction()
-        // )
+       home: SignInPage()
+       //  home: Scaffold(
+       //    appBar: AppBar(
+       //      title: const Text('Wild Ones'),
+       //    ),
+       //      body:HomePageAction()
+       //  )
         //home: HomePageAction(),
         );
   }
@@ -54,7 +54,24 @@ class HomePageAction extends StatefulWidget {
   _HomePageActionState createState() => _HomePageActionState();
 }
 
-class _HomePageActionState extends State<HomePageAction> {
+class _HomePageActionState extends State<HomePageAction> with SingleTickerProviderStateMixin {
+  AnimationController _controller;
+
+  @override
+  void initState() {
+    _controller = AnimationController(
+      duration: const Duration(milliseconds: 5000),
+      vsync: this,
+    );
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
   String _img = 'assets/images/make_sound_normal.png';
   bool _active = false;
   int _duration;
@@ -130,21 +147,33 @@ class _HomePageActionState extends State<HomePageAction> {
         });
       },
       child: Center(
-        child: AnimatedContainer(
-          //width: _active ? 200.0 : 100.0,
-          width: 200,
-          //height: _active ? 100.0 : 200.0,
-          //color: _active ? Colors.red : Colors.blue, //@TODO set background color of parent
-          alignment:
-              _active ? Alignment.center : AlignmentDirectional.topCenter,
-          duration: Duration(seconds: 2), //@TODO determine length of audio file
-          //  curve: Curves.fastOutSlowIn,
-          child: Image.asset(
-            _img,
-            width: 200,
-            fit: BoxFit.cover,
-          ),
-        ),
+        child: Column(
+          children: <Widget>[
+            RotationTransition(turns: Tween(begin: 0.0,end: 1.0).animate(_controller),
+              child: Image.asset(
+                _img,
+                width: 200,
+                fit: BoxFit.cover,
+              ),
+            ),
+          ],
+        )
+
+        // child: AnimatedContainer(
+        //   //width: _active ? 200.0 : 100.0,
+        //   width: 200,
+        //   //height: _active ? 100.0 : 200.0,
+        //   //color: _active ? Colors.red : Colors.blue, //@TODO set background color of parent
+        //   alignment:
+        //       _active ? Alignment.center : AlignmentDirectional.topCenter,
+        //   duration: Duration(seconds: 2), //@TODO determine length of audio file
+        //   //  curve: Curves.fastOutSlowIn,
+        //   child: Image.asset(
+        //     _img,
+        //     width: 200,
+        //     fit: BoxFit.cover,
+        //   ),
+        // ),
       ),
     );
     // return Scaffold(
