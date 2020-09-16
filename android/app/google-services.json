@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "256162557150",
+    "firebase_url": "https://leo-flutter.firebaseio.com",
+    "project_id": "leo-flutter",
+    "storage_bucket": "leo-flutter.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:256162557150:android:f1aa692ec896a9ac59a64f",
+        "android_client_info": {
+          "package_name": "it.zachis.flutter_leo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "256162557150-96mvhetqctbk8pnpf59f5jps88gt8eu2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "it.zachis.flutter_leo",
+            "certificate_hash": "e77baea5ee19131e8270498e1db66db284809f3f"
+          }
+        },
+        {
+          "client_id": "256162557150-5h045u1v77qgqi3lgngomqeftadfvffu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyADhrEMlr0GceOhyPnJ9kO_SH3WIMzHvBY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "256162557150-5h045u1v77qgqi3lgngomqeftadfvffu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
