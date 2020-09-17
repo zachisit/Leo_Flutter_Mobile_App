@@ -1,9 +1,29 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_leo/app/sign_in/sign_in_button.dart';
-import 'package:flutter_leo/common_widgets/button.dart';
+import 'package:flutter_leo/services/auth.dart';
+import 'package:flutter_leo/user/user.dart';
 
 class SignInPage extends StatelessWidget {
+  SignInPage({@required this.onSignIn, @required this.auth});
+
+  final Function(User) onSignIn;
+  final AuthBase auth;
+
+  Future<void> _signInAnon() async {
+    print('here');
+    try {
+      print('hi');
+      User user = await auth.signInAnon();
+      print(user.uid);
+      onSignIn(user);
+    } catch (e) {
+      print('hereee');
+      print(e.toString());
+      //@TODO: show alert dialogue to user
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -74,7 +94,7 @@ class SignInPage extends StatelessWidget {
                     text: 'Go anonoymous',
                     color: Colors.green[100],
                     textColor: Colors.black87,
-                    onPressed: () {},
+                    onPressed: _signInAnon,
                   ),
                 ]
             ),

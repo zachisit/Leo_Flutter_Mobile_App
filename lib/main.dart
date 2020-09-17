@@ -3,12 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:assets_audio_player/assets_audio_player.dart';
 import "dart:math";
 import 'package:flutter_leo/Sounds.dart';
-import 'app/sign_in/sign_in_page.dart';
+import 'package:flutter_leo/app/sign_in/landing.dart';
+import 'package:flutter_leo/services/auth.dart';
 
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -18,8 +19,10 @@ class MyApp extends StatelessWidget {
           backgroundColor: Colors.pink[100],
           visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
-        //home: MyHomePage(title: 'Make Leo Talk'),
-       home: SignInPage()
+      home: LandingPageState(
+          auth: Auth()
+      ),
+       //home: SignInPage()
        //  home: Scaffold(
        //    appBar: AppBar(
        //      title: const Text('Wild Ones'),
