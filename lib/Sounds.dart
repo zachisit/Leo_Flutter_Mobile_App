@@ -8,13 +8,13 @@ class Sounds {
 
   static List<String> returnAvailableSoundPaths() {
     return [
-      //'assets/sounds/911.mp3',
+      'assets/sounds/911.mp3',
       'assets/sounds/alive.mp3',
       'assets/sounds/boobs.mp3',
       'assets/sounds/buggers.mp3',
       'assets/sounds/rat-turds.mp3',
       'assets/sounds/beelzibub.mp3',
-      'assets/sounds/test.mp3',
+      //'assets/sounds/test.mp3',
       'assets/sounds/sharted.mp3',
       'assets/sounds/fleegles.mp3',
       'assets/sounds/exit-left.mp3',

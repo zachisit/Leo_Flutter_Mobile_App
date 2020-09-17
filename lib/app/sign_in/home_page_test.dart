@@ -29,6 +29,7 @@ class _HomePageActionState extends State<HomePageAction> with SingleTickerProvid
 
   @override
   void initState() {
+    print('init TEST');
     _controller = AnimationController(
       duration: const Duration(milliseconds: 5000),
       vsync: this,
@@ -111,7 +112,59 @@ class _HomePageActionState extends State<HomePageAction> with SingleTickerProvid
           )
         ],
       ),
+      body: Center(
+        child: GestureDetector(
+          onTap: () {
+            final assetsAudioPlayer = AssetsAudioPlayer();
+            assetsAudioPlayer.open(Audio(Sounds.returnRandomSoundPath()),
+                autoStart: true);
 
+            activeSoundStatus(true);
+            //assetsAudioPlayer.
+
+            assetsAudioPlayer.playlistFinished.listen((finished) {
+              if (finished) {
+                return activeSoundStatus(false);
+              }
+            });
+            print('------ here -----');
+            assetsAudioPlayer.current.listen((current) {
+              _duration = current.audio.duration.inSeconds;
+              print('----- he ----');
+              print(_duration);
+            });
+          },
+          child: Center(
+              child: Column(
+                children: <Widget>[
+                  RotationTransition(turns: Tween(begin: 0.0,end: 1.0).animate(_controller),
+                    child: Image.asset(
+                      _img,
+                      width: 200,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ],
+              )
+
+            // child: AnimatedContainer(
+            //   //width: _active ? 200.0 : 100.0,
+            //   width: 200,
+            //   //height: _active ? 100.0 : 200.0,
+            //   //color: _active ? Colors.red : Colors.blue, //@TODO set background color of parent
+            //   alignment:
+            //       _active ? Alignment.center : AlignmentDirectional.topCenter,
+            //   duration: Duration(seconds: 2), //@TODO determine length of audio file
+            //   //  curve: Curves.fastOutSlowIn,
+            //   child: Image.asset(
+            //     _img,
+            //     width: 200,
+            //     fit: BoxFit.cover,
+            //   ),
+            // ),
+          ),
+        )
+      )
     );
     return GestureDetector(
       onTap: () {
