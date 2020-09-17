@@ -1,7 +1,7 @@
 import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_leo/services/auth.dart';
-
+import 'dart:math' as math;
 import '../../Sounds.dart';
 
 class HomePageAction extends StatefulWidget {
@@ -25,21 +25,26 @@ class HomePageAction extends StatefulWidget {
 }
 
 class _HomePageActionState extends State<HomePageAction> with SingleTickerProviderStateMixin {
-  AnimationController _controller;
+  AnimationController animationController;
 
   @override
   void initState() {
-    print('init TEST');
-    _controller = AnimationController(
-      duration: const Duration(milliseconds: 5000),
-      vsync: this,
-    );
+    animationController = AnimationController(
+        vsync: this,
+        duration: Duration(seconds: 2)
+    )..repeat();
+
     super.initState();
+    stopRotation();
   }
+
+  stopRotation() => animationController.stop();
+
+  startRotation() => animationController.repeat();
 
   @override
   void dispose() {
-    _controller.dispose();
+    animationController.dispose();
     super.dispose();
   }
 
@@ -115,6 +120,7 @@ class _HomePageActionState extends State<HomePageAction> with SingleTickerProvid
       body: Center(
         child: GestureDetector(
           onTap: () {
+            print('tapped');
             final assetsAudioPlayer = AssetsAudioPlayer();
             assetsAudioPlayer.open(Audio(Sounds.returnRandomSoundPath()),
                 autoStart: true);
@@ -124,47 +130,64 @@ class _HomePageActionState extends State<HomePageAction> with SingleTickerProvid
 
             assetsAudioPlayer.playlistFinished.listen((finished) {
               if (finished) {
+                stopRotation();
                 return activeSoundStatus(false);
               }
             });
-            print('------ here -----');
+
             assetsAudioPlayer.current.listen((current) {
               _duration = current.audio.duration.inSeconds;
-              print('----- he ----');
               print(_duration);
             });
-          },
-          child: Center(
-              child: Column(
-                children: <Widget>[
-                  RotationTransition(turns: Tween(begin: 0.0,end: 1.0).animate(_controller),
-                    child: Image.asset(
-                      _img,
-                      width: 200,
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                ],
-              )
-
-            // child: AnimatedContainer(
-            //   //width: _active ? 200.0 : 100.0,
-            //   width: 200,
-            //   //height: _active ? 100.0 : 200.0,
-            //   //color: _active ? Colors.red : Colors.blue, //@TODO set background color of parent
-            //   alignment:
-            //       _active ? Alignment.center : AlignmentDirectional.topCenter,
-            //   duration: Duration(seconds: 2), //@TODO determine length of audio file
-            //   //  curve: Curves.fastOutSlowIn,
-            //   child: Image.asset(
-            //     _img,
-            //     width: 200,
-            //     fit: BoxFit.cover,
-            //   ),
-            // ),
+            startRotation();
+          }, // onTap
+          child: AnimatedBuilder(
+            animation: animationController,
+            builder: (_, child) {
+              return Transform.rotate(
+                angle: animationController.value * 2 * math.pi,
+                child: child,
+              );
+            },
+            child: Image.asset( //@TODO move to method
+              _img,
+              width: 250,
+              fit: BoxFit.cover,
+            ),
           ),
-        )
+
+        //   // child: Center(
+        //   //     child: Column(
+        //   //       children: <Widget>[
+        //   //         RotationTransition(turns: Tween(begin: 0.0,end: 1.0).animate(_controller),
+        //   //           child: Image.asset(
+        //   //             _img,
+        //   //             width: 200,
+        //   //             fit: BoxFit.cover,
+        //   //           ),
+        //   //         ),
+        //   //       ],
+        //   //     )
+        //   //
+        //   //   // child: AnimatedContainer(
+        //   //   //   //width: _active ? 200.0 : 100.0,
+        //   //   //   width: 200,
+        //   //   //   //height: _active ? 100.0 : 200.0,
+        //   //   //   //color: _active ? Colors.red : Colors.blue, //@TODO set background color of parent
+        //   //   //   alignment:
+        //   //   //       _active ? Alignment.center : AlignmentDirectional.topCenter,
+        //   //   //   duration: Duration(seconds: 2), //@TODO determine length of audio file
+        //   //   //   //  curve: Curves.fastOutSlowIn,
+        //   //   //   child: Image.asset(
+        //   //   //     _img,
+        //   //   //     width: 200,
+        //   //   //     fit: BoxFit.cover,
+        //   //   //   ),
+        //   //   // ),
+        //   // ),
+        // )
       )
+    )
     );
     return GestureDetector(
       onTap: () {
@@ -190,7 +213,7 @@ class _HomePageActionState extends State<HomePageAction> with SingleTickerProvid
       child: Center(
           child: Column(
             children: <Widget>[
-              RotationTransition(turns: Tween(begin: 0.0,end: 1.0).animate(_controller),
+              RotationTransition(turns: Tween(begin: 0.0,end: 1.0).animate(animationController),
                 child: Image.asset(
                   _img,
                   width: 200,

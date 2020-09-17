@@ -10,11 +10,13 @@ class SignInPage extends StatelessWidget {
   final Function(User) onSignIn;
   final AuthBase auth;
 
+
   Future<void> _signInAnon() async {
     print('here');
     try {
       print('hi');
       User user = await auth.signInAnon();
+
       print(user.uid);
       onSignIn(user);
     } catch (e) {
