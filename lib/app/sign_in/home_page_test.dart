@@ -5,15 +5,13 @@ import 'dart:math' as math;
 import '../../Sounds.dart';
 
 class HomePageAction extends StatefulWidget {
-  HomePageAction({@required this.onSignOut, @required this.auth});
+  HomePageAction({@required this.auth});
 
-  final VoidCallback onSignOut;
   final AuthBase auth;
 
   Future<void> _signOut() async {
     try {
       await auth.signOut();
-      onSignOut();
     } catch (e) {
       print(e.toString());
       //@TODO: show alert dialogue to user
@@ -122,11 +120,12 @@ class _HomePageActionState extends State<HomePageAction> with SingleTickerProvid
           onTap: () {
             print('tapped');
             final assetsAudioPlayer = AssetsAudioPlayer();
-            assetsAudioPlayer.open(Audio(Sounds.returnRandomSoundPath()),
-                autoStart: true);
+            assetsAudioPlayer.open(
+                Audio(Sounds.returnRandomSoundPath()),
+                autoStart: true
+            );
 
             activeSoundStatus(true);
-            //assetsAudioPlayer.
 
             assetsAudioPlayer.playlistFinished.listen((finished) {
               if (finished) {

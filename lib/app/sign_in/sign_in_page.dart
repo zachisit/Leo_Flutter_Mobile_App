@@ -5,20 +5,15 @@ import 'package:flutter_leo/services/auth.dart';
 import 'package:flutter_leo/user/user.dart';
 
 class SignInPage extends StatelessWidget {
-  SignInPage({@required this.onSignIn, @required this.auth});
+  SignInPage({@required this.auth});
 
-  final Function(User) onSignIn;
   final AuthBase auth;
 
 
   Future<void> _signInAnon() async {
-    print('here');
     try {
-      print('hi');
-      User user = await auth.signInAnon();
-
-      print(user.uid);
-      onSignIn(user);
+      await auth.signInAnon();
+      //@TODO show dialogue
     } catch (e) {
       print('hereee');
       print(e.toString());
