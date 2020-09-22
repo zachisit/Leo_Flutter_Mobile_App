@@ -14,10 +14,11 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
         title: 'Make Leo Speak',
-        theme: ThemeData(
-          primarySwatch: Colors.lightBlue,
-          backgroundColor: Colors.pink[100],
+        theme: ThemeData( //@TODO why not passed into widgets?
+          primarySwatch: Colors.teal,
+          backgroundColor: Colors.indigo,
           visualDensity: VisualDensity.adaptivePlatformDensity,
+          //buttonColor: Colors.blue,
         ),
       home: LandingPageState(
           auth: Auth()

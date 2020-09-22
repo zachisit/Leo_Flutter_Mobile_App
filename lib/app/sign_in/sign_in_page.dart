@@ -1,14 +1,11 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_leo/app/sign_in/email_sign_in.dart';
 import 'package:flutter_leo/app/sign_in/sign_in_button.dart';
 import 'package:flutter_leo/services/auth.dart';
-import 'package:flutter_leo/user/user.dart';
 
 class SignInPage extends StatelessWidget {
   SignInPage({@required this.auth});
-
   final AuthBase auth;
-
 
   Future<void> _signInAnon() async {
     try {
@@ -21,25 +18,37 @@ class SignInPage extends StatelessWidget {
     }
   }
 
+  Future<void> _signInWithGoogle() async {
+    try {
+      await auth.signInWithGoogle();
+      //@TODO show dialogue
+    } catch (e) {
+      print('hereee');
+      print(e.toString());
+      //@TODO: show alert dialogue to user
+    }
+  }
+
+  void _signInWithEmail(BuildContext context) {
+    Navigator.of(context).push(
+      MaterialPageRoute<void>(
+        fullscreenDialog: true,
+        builder: (context) => EmailSignInPage(auth: auth),
+      )
+    );
+
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text(
-              'Howdy',
-            style: TextStyle(
-              //@TODO center text
-            )
-          ),
-          elevation: 2.0,
-        ),
-        body: _buildContent()
+        body: _buildContent(context)
     );
   }
 
-  Widget _buildContent() {
+  Widget _buildContent(BuildContext context) {
     return Container(
-          color: Colors.pink[100],
+          color: Colors.indigo,
           child: Padding(
             padding: const EdgeInsets.all(20.0),
             child: Column(
@@ -54,28 +63,22 @@ class SignInPage extends StatelessWidget {
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: 32.0,
+                      color: Colors.white,
                     )
                   ),
                   SizedBox(height: 50),
                   SignInButton(
                     text: 'Sign in With Google',
-                    color: Colors.blue[300],
+                    color: Colors.pink[100],
                     textColor: Colors.black87,
-                    onPressed: () {},
-                  ),
-                  SizedBox(height: 10),
-                  SignInButton(
-                    text: 'Sign in With Facebook',
-                    color: Colors.yellow[100],
-                    textColor: Colors.black87,
-                    onPressed: () {},
+                    onPressed: _signInWithGoogle,
                   ),
                   SizedBox(height: 10),
                   SignInButton(
                     text: 'Sign in With Email',
-                    color: Colors.orange[100],
+                    color: Colors.yellow[100],
                     textColor: Colors.black87,
-                    onPressed: () {},
+                    onPressed: () => _signInWithEmail(context),
                   ),
                   SizedBox(height: 10),
                   Text(
@@ -83,7 +86,7 @@ class SignInPage extends StatelessWidget {
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: 18.0,
-                      color: Colors.black87,
+                      color: Colors.white,
                     ),
                   ),
                   SizedBox(height: 10),
@@ -93,7 +96,7 @@ class SignInPage extends StatelessWidget {
                     textColor: Colors.black87,
                     onPressed: _signInAnon,
                   ),
-                ]
+                ],
             ),
           )
       );
