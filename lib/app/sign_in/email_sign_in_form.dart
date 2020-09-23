@@ -34,7 +34,7 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
     });
     print('email  $_email and password: $_password');
 
-    Connec
+
     try {
       if (_formType == EmailSignInFormType.signIn) {
         print('sign in');
