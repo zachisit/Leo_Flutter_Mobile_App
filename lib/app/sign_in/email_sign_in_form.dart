@@ -33,8 +33,7 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
       _isLoading = true;
     });
     print('email  $_email and password: $_password');
-
-    Connec
+    
     try {
       if (_formType == EmailSignInFormType.signIn) {
         print('sign in');
@@ -57,7 +56,10 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
   }
 
   void _emailEditingComplete() {
-    FocusScope.of(context).requestFocus(_passwordFocusNode);
+    final newFocus = widget.emailValidator.isValid(_email)
+    ? _passwordFocusNode
+    : _emailFocusNode;
+    FocusScope.of(context).requestFocus(newFocus);
   }
 
   void _toggleFormType() {
