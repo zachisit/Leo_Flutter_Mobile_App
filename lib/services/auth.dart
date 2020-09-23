@@ -74,6 +74,7 @@ class Auth implements AuthBase {
   @override
   Future<User> signInWithEmailPass(String email, String password) async {
     final authResult = await _firebaseAuth.signInWithEmailAndPassword(email: email, password: password);
+    print('sign in with $email and $password');
     return _userFromFirebase(authResult.user);
   }
 
