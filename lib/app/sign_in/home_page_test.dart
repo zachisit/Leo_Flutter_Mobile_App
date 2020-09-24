@@ -1,5 +1,6 @@
 import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_leo/common_widgets/platform_alert_dialog.dart';
 import 'package:flutter_leo/services/auth.dart';
 import 'dart:math' as math;
 import '../../Sounds.dart';
@@ -15,6 +16,20 @@ class HomePageAction extends StatefulWidget {
     } catch (e) {
       print(e.toString());
       //@TODO: show alert dialogue to user
+    }
+  }
+
+
+  Future<void> _confirmSignOut(BuildContext context) async {
+    final didRequestSignOut = await PlatformAlertDialog(
+      title: 'Logout',
+      content: 'Are you sure that you want to log out?',
+      cancelActionText: 'Nope',
+      defaultActionText: 'Sure',
+    ).show(context);
+
+    if (didRequestSignOut == true) {
+      _signOut();
     }
   }
 
@@ -98,6 +113,7 @@ class _HomePageActionState extends State<HomePageAction>
   //   }
   // }
 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -107,12 +123,14 @@ class _HomePageActionState extends State<HomePageAction>
           backgroundColor: Colors.pink[100],
           actions: <Widget>[
             FlatButton(
-                onPressed: widget._signOut,
+                onPressed: () => widget._confirmSignOut(context),
                 child: Text('Log Out',
                     style: TextStyle(
                       fontSize: 18.0,
                       color: Colors.black54,
-                    )))
+                    )
+                )
+            )
           ],
         ),
         body: Center(
