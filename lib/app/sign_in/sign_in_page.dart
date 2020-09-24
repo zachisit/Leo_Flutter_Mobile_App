@@ -34,10 +34,10 @@ class SignInPage extends StatelessWidget {
 
   void _signInWithEmail(BuildContext context) {
     Navigator.of(context).push(
-      MaterialPageRoute<void>(
-        fullscreenDialog: true,
-        builder: (context) => EmailSignInPage(auth: auth),
-      )
+        MaterialPageRoute<void>(
+          fullscreenDialog: true,
+          builder: (context) => EmailSignInPage(auth: auth),
+        )
     );
 
   }
@@ -51,57 +51,82 @@ class SignInPage extends StatelessWidget {
 
   Widget _buildContent(BuildContext context) {
     return Container(
-          color: Colors.indigo,
-          child: Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Column(
-              // centered in the verical alignment
-              mainAxisAlignment: MainAxisAlignment.center,
-                // allow the width of the column stretch 100% across
-                // the horizontal/cross axis alignement
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: <Widget>[
-                  Text(
-                    'Sign In',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 32.0,
-                      color: Colors.white,
-                    )
-                  ),
-                  SizedBox(height: 50),
-                  SignInButton(
-                    text: 'Sign in With Google',
-                    color: Colors.pink[100],
-                    textColor: Colors.black87,
-                    onPressed: _signInWithGoogle,
-                  ),
-                  SizedBox(height: 10),
-                  SignInButton(
-                    text: 'Sign in With Email',
-                    color: Colors.yellow[100],
-                    textColor: Colors.black87,
-                    onPressed: () => _signInWithEmail(context),
-                  ),
-                  SizedBox(height: 10),
-                  Text(
-                    'or',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 18.0,
-                      color: Colors.white,
+        color: Colors.indigo,
+        child: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Stack(
+            children: <Widget>[
+              Positioned(
+                top: 0,
+                width: MediaQuery.of(context).size.width*(90/100),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: <Widget>[
+                    SizedBox(height:100),
+                    Text(
+                        'Sign In',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 32.0,
+                          color: Colors.white,
+                        )
                     ),
-                  ),
-                  SizedBox(height: 10),
-                  SignInButton(
-                    text: 'Go anonoymous',
-                    color: Colors.green[100],
-                    textColor: Colors.black87,
-                    onPressed: _signInAnon,
-                  ),
-                ],
-            ),
-          )
-      );
+                    SizedBox(height: 50),
+                    SignInButton(
+                      text: 'Sign in With Google',
+                      color: Colors.pink[100],
+                      textColor: Colors.black87,
+                      onPressed: _signInWithGoogle,
+                    ),
+                    SizedBox(height: 10),
+                    SignInButton(
+                      text: 'Sign in With Email',
+                      color: Colors.yellow[100],
+                      textColor: Colors.black87,
+                      onPressed: () => _signInWithEmail(context),
+                    ),
+                    SizedBox(height: 10),
+                    Text(
+                      'or',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 18.0,
+                        color: Colors.white,
+                      ),
+                    ),
+                    SizedBox(height: 10),
+                    SignInButton(
+                      text: 'Go anonoymous',
+                      color: Colors.green[100],
+                      textColor: Colors.black87,
+                      onPressed: _signInAnon,
+                    ),
+                  ],
+                ),
+              ),
+              Positioned(
+                bottom:0,
+                width: MediaQuery.of(context).size.width*(90/100),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: <Widget>[
+                    Text(
+                      'v1.0.323',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 13.0,
+                        fontStyle: FontStyle.italic,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        )
+    );
   }
 }
