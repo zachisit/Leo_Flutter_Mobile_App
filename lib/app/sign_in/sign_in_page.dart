@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_leo/app/sign_in/email_sign_in.dart';
 import 'package:flutter_leo/app/sign_in/sign_in_button.dart';
+import 'package:flutter_leo/common_widgets/platform_alert_dialog.dart';
 import 'package:flutter_leo/services/auth.dart';
 
 class SignInPage extends StatelessWidget {
@@ -12,9 +13,11 @@ class SignInPage extends StatelessWidget {
       await auth.signInAnon();
       //@TODO show dialogue
     } catch (e) {
-      print('hereee');
-      print(e.toString());
-      //@TODO: show alert dialogue to user
+      // PlatformAlertDialog(
+      //   title: 'Sign in failed',
+      //   content: e.toString(),
+      //   defaultActionText: 'OK',
+      // ).show(context);
     }
   }
 

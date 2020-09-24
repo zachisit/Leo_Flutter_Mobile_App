@@ -1,6 +1,10 @@
+
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_leo/app/utility/validators.dart';
 import 'package:flutter_leo/common_widgets/form_submit_button.dart';
+import 'package:flutter_leo/common_widgets/platform_alert_dialog.dart';
 import 'package:flutter_leo/services/auth.dart';
 
 enum EmailSignInFormType { signIn, register }
@@ -44,9 +48,11 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
       }
       Navigator.of(context).pop();
     } catch (e) {
-      print('errors');
-      print(e.toString());
-      //@TODO throw alert if failed
+      PlatformAlertDialog(
+        title: 'Sign in failed',
+        content: e.toString(),
+        defaultActionText: 'OK',
+      ).show(context);
     } finally {
       setState(() {
         print('now not loading');
