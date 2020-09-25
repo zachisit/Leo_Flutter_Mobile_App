@@ -3,13 +3,14 @@ import 'package:flutter_leo/app/sign_in/home_page_test.dart';
 import 'package:flutter_leo/app/sign_in/sign_in_page.dart';
 import 'package:flutter_leo/services/auth.dart';
 import 'package:flutter_leo/user/user.dart';
+import 'package:provider/provider.dart';
 
 class LandingPageState extends StatelessWidget {
-  LandingPageState({@required this.auth});
-  final AuthBase auth;
 
   @override
   Widget build(BuildContext context) {
+    final auth = Provider.of<AuthBase>(context, listen: false);
+
     return StreamBuilder<User>(
         stream: auth.onAuthStateChanged,
         builder: (context, snapshot) {
@@ -20,11 +21,9 @@ class LandingPageState extends StatelessWidget {
             User user = snapshot.data;
             print('landing');
             if (user == null) {
-              return SignInPage(
-                auth: auth,
-              );
+              return SignInPage();
             }
-            return HomePageAction(auth: auth);
+            return HomePageAction();
           } else {
             // no data in the snapshot
             // either we have not yet received

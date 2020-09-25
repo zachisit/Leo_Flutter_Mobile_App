@@ -1,17 +1,13 @@
-
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_leo/app/utility/validators.dart';
 import 'package:flutter_leo/common_widgets/form_submit_button.dart';
 import 'package:flutter_leo/common_widgets/platform_alert_dialog.dart';
 import 'package:flutter_leo/services/auth.dart';
+import 'package:provider/provider.dart';
 
 enum EmailSignInFormType { signIn, register }
 
 class EmailSignInForm extends StatefulWidget with EmailAndPasswordValidators {
-  EmailSignInForm({@required this.auth});
-  final AuthBase auth;
 
   @override
   _EmailSignInFormState createState() => _EmailSignInFormState();
@@ -39,12 +35,13 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
     print('email  $_email and password: $_password');
     
     try {
+      final auth = Provider.of<AuthBase>(context, listen: false);
       if (_formType == EmailSignInFormType.signIn) {
         print('sign in');
-        await widget.auth.signInWithEmailPass(_email, _password);
+        await auth.signInWithEmailPass(_email, _password);
       } else {
         print('register here');
-        await widget.auth.createUserWithEmailPass(_email, _password);
+        await auth.createUserWithEmailPass(_email, _password);
       }
       Navigator.of(context).pop();
     } catch (e) {

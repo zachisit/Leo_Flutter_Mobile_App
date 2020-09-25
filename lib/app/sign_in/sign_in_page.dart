@@ -3,25 +3,26 @@ import 'package:flutter_leo/app/sign_in/email_sign_in.dart';
 import 'package:flutter_leo/app/sign_in/sign_in_button.dart';
 import 'package:flutter_leo/common_widgets/platform_alert_dialog.dart';
 import 'package:flutter_leo/services/auth.dart';
+import 'package:provider/provider.dart';
 
 class SignInPage extends StatelessWidget {
-  SignInPage({@required this.auth});
-  final AuthBase auth;
 
-  Future<void> _signInAnon() async {
+  Future<void> _signInAnon(BuildContext context) async {
     try {
+      final auth = Provider.of<AuthBase>(context, listen: false);
       await auth.signInAnon();
       //@TODO show dialogue
     } catch (e) {
-      // PlatformAlertDialog(
-      //   title: 'Sign in failed',
-      //   content: e.toString(),
-      //   defaultActionText: 'OK',
-      // ).show(context);
+      PlatformAlertDialog(
+        title: 'Sign in failed',
+        content: e.toString(),
+        defaultActionText: 'OK',
+      ).show(context);
     }
   }
 
-  Future<void> _signInWithGoogle() async {
+  Future<void> _signInWithGoogle(BuildContext context) async {
+    final auth = Provider.of<AuthBase>(context, listen: false);
     try {
       await auth.signInWithGoogle();
       //@TODO show dialogue
@@ -36,7 +37,7 @@ class SignInPage extends StatelessWidget {
     Navigator.of(context).push(
         MaterialPageRoute<void>(
           fullscreenDialog: true,
-          builder: (context) => EmailSignInPage(auth: auth),
+          builder: (context) => EmailSignInPage(),
         )
     );
 
@@ -76,7 +77,7 @@ class SignInPage extends StatelessWidget {
                       text: 'Sign in With Google',
                       color: Colors.pink[100],
                       textColor: Colors.black87,
-                      onPressed: _signInWithGoogle,
+                      onPressed: () => _signInWithGoogle(context),
                     ),
                     SizedBox(height: 10),
                     SignInButton(
@@ -99,7 +100,7 @@ class SignInPage extends StatelessWidget {
                       text: 'Go anonoymous',
                       color: Colors.green[100],
                       textColor: Colors.black87,
-                      onPressed: _signInAnon,
+                      onPressed: () => _signInAnon(context),
                     ),
                   ],
                 ),
@@ -113,7 +114,7 @@ class SignInPage extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: <Widget>[
                     Text(
-                      'v1.0.323',
+                      'v1.0.324',
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: 13.0,
