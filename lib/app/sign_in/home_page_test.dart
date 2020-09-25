@@ -2,20 +2,22 @@ import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_leo/common_widgets/platform_alert_dialog.dart';
 import 'package:flutter_leo/services/auth.dart';
+import 'package:provider/provider.dart';
 import 'dart:math' as math;
 import '../../Sounds.dart';
 
 class HomePageAction extends StatefulWidget {
-  HomePageAction({@required this.auth});
 
-  final AuthBase auth;
-
-  Future<void> _signOut() async {
+  Future<void> _signOut(BuildContext context) async {
     try {
+      final auth = Provider.of<AuthBase>(context, listen: false);
       await auth.signOut();
     } catch (e) {
-      print(e.toString());
-      //@TODO: show alert dialogue to user
+      PlatformAlertDialog(
+        title: 'Sign out failed',
+        content: e.toString(),
+        defaultActionText: 'OK',
+      ).show(context);
     }
   }
 
@@ -29,7 +31,7 @@ class HomePageAction extends StatefulWidget {
     ).show(context);
 
     if (didRequestSignOut == true) {
-      _signOut();
+      _signOut(context);
     }
   }
 
