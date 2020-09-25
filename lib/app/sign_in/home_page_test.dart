@@ -13,8 +13,11 @@ class HomePageAction extends StatefulWidget {
       final auth = Provider.of<AuthBase>(context, listen: false);
       await auth.signOut();
     } catch (e) {
-      print(e.toString());
-      //@TODO: show alert dialogue to user
+      PlatformAlertDialog(
+        title: 'Sign out failed',
+        content: e.toString(),
+        defaultActionText: 'OK',
+      ).show(context);
     }
   }
 

@@ -27,9 +27,11 @@ class SignInPage extends StatelessWidget {
       await auth.signInWithGoogle();
       //@TODO show dialogue
     } catch (e) {
-      print('hereee');
-      print(e.toString());
-      //@TODO: show alert dialogue to user
+      PlatformAlertDialog(
+        title: 'Sign in failed',
+        content: e.toString(),
+        defaultActionText: 'OK',
+      ).show(context);
     }
   }
 
