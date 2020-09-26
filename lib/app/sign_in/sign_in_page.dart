@@ -1,23 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_leo/app/sign_in/email_sign_in.dart';
 import 'package:flutter_leo/app/sign_in/sign_in_button.dart';
 import 'package:flutter_leo/common_widgets/platform_alert_dialog.dart';
+import 'package:flutter_leo/common_widgets/platform_exception_alert_dialog.dart';
 import 'package:flutter_leo/services/auth.dart';
 import 'package:provider/provider.dart';
 
 class SignInPage extends StatelessWidget {
 
+  void _showSignInError(BuildContext context, PlatformException exception) {
+    PlatformExceptionAlertDialog(
+      title: 'Sign In Failed',
+      exception: exception,
+    ).show(context);
+  }
+
   Future<void> _signInAnon(BuildContext context) async {
     try {
       final auth = Provider.of<AuthBase>(context, listen: false);
       await auth.signInAnon();
-      //@TODO show dialogue
-    } catch (e) {
-      PlatformAlertDialog(
-        title: 'Sign in failed',
-        content: e.toString(),
-        defaultActionText: 'OK',
-      ).show(context);
+    } on PlatformException catch (e) {
+      _showSignInError(context, e);
     }
   }
 
@@ -25,13 +29,10 @@ class SignInPage extends StatelessWidget {
     final auth = Provider.of<AuthBase>(context, listen: false);
     try {
       await auth.signInWithGoogle();
-      //@TODO show dialogue
-    } catch (e) {
-      PlatformAlertDialog(
-        title: 'Sign in failed',
-        content: e.toString(),
-        defaultActionText: 'OK',
-      ).show(context);
+    } on PlatformException catch (e) {
+      if (e.code != 'ERROR_ABORTED_BY_USER') {
+        _showSignInError(context, e);
+      }
     }
   }
 
@@ -42,7 +43,6 @@ class SignInPage extends StatelessWidget {
           builder: (context) => EmailSignInPage(),
         )
     );
-
   }
 
   @override
