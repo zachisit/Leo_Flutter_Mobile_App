@@ -1,5 +1,6 @@
 import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_leo/common_widgets/image_animator.dart';
 import 'package:flutter_leo/common_widgets/platform_alert_dialog.dart';
 import 'package:flutter_leo/services/auth.dart';
 import 'package:provider/provider.dart';
@@ -40,34 +41,23 @@ class HomePageAction extends StatefulWidget {
 
 class _HomePageActionState extends State<HomePageAction>
     with SingleTickerProviderStateMixin {
-  AnimationController animationController;
+  ImageAnimation imageRotater;
+  String _img = 'assets/images/cat_normal.png';
+  bool _active = false;
 
   @override
   void initState() {
-    animationController =
-        AnimationController(
+    imageRotater =
+        ImageAnimation(
             vsync: this,
-            duration: Duration(seconds: 2)
         )..repeat();
 
     super.initState();
-    stopRotation();
+    imageRotater.stopRotation();
   }
-
-  void stopRotation() => animationController.stop();
-
-  void startRotation() => animationController.repeat();
 
   bool getActiveState() => _active;
 
-  @override
-  void dispose() {
-    animationController.dispose();
-    super.dispose();
-  }
-
-  String _img = 'assets/images/cat_normal.png';
-  bool _active = false;
 
   void activeSoundStatus(bool isPlaying) {
     var file, active;
@@ -112,8 +102,7 @@ class _HomePageActionState extends State<HomePageAction>
         body: Center(
             child: GestureDetector(
           onTap: () {
-            print('tapped');
-            startRotation();
+            imageRotater.startRotation();
             final assetsAudioPlayer = AssetsAudioPlayer();
             assetsAudioPlayer.open(Audio(Sounds.returnRandomSoundPath()),
                 autoStart: true);
@@ -123,7 +112,7 @@ class _HomePageActionState extends State<HomePageAction>
             assetsAudioPlayer.playlistFinished.listen((finished) {
               if (finished) {
                 print('stopped playing');
-                stopRotation();
+                imageRotater.stopRotation();
                 return activeSoundStatus(false);
               }
             });
@@ -134,10 +123,10 @@ class _HomePageActionState extends State<HomePageAction>
             // });
           }, // onTap
           child: AnimatedBuilder(
-            animation: animationController,
+            animation: imageRotater,
             builder: (_, child) {
               var d = (getActiveState() != false)
-                  ? animationController.value * 2 * math.pi
+                  ? imageRotater.value * 2 * math.pi
                   : 0.0;
               return Transform.rotate(
                 angle: d,

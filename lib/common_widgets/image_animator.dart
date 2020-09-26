@@ -3,24 +3,17 @@ import 'package:flutter/animation.dart';
 
 class ImageAnimation extends AnimationController {
   ImageAnimation({
-    @required this.duration,
     @required this.vsync,
   }) : super(
-    duration:duration,
+    duration:Duration(seconds: 2),
     vsync:vsync
   );
-  final bool _isActive = false;
-  final Duration duration;
+
   final TickerProvider vsync;
 
-  void stopRotation() => this.stop();
+  void stopRotation() => stop();
 
-  void startRotation() {
-    print('start rotat');
-    print(this.duration);
+  void startRotation() => repeat();
 
-    this.repeat();
-  }
-
-  bool getActiveState() => _isActive;
+  bool isActive() => isAnimating;
 }
