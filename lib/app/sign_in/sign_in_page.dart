@@ -132,7 +132,7 @@ class _SignInPageState extends State<SignInPage> {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: <Widget>[
                     Text(
-                      'v1.0.324',
+                      'v1.0.325',
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: 13.0,

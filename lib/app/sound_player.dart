@@ -1,8 +1,14 @@
+import 'dart:async';
+
 import 'package:assets_audio_player/assets_audio_player.dart';
 import '../Sounds.dart';
 
 class SoundPlayer {
   final AssetsAudioPlayer player = AssetsAudioPlayer();
+
+  //get finished => player.playlistAudioFinished;
+
+  get isFinished => player.playlistFinished;
 
   void playSound() {
     player.open(
@@ -13,13 +19,7 @@ class SoundPlayer {
     );
   }
 
-   alertFinished() {
-     player.playlistFinished.listen((finished) {
-       if (finished) {
-         print('stopped playing');
-         //imageRotater.stopRotation();
-         //return activeSoundStatus(false);
-       }
-     });
-  }
+  // StreamSubscription<dynamic> alertFinished() {
+  //    return player.playlistFinished.listen(finished);
+  // }
 }

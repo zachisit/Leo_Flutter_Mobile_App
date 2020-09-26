@@ -1,5 +1,6 @@
 import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_leo/app/sound_player.dart';
 import 'package:flutter_leo/common_widgets/image_animator.dart';
 import 'package:flutter_leo/common_widgets/platform_alert_dialog.dart';
 import 'package:flutter_leo/services/auth.dart';
@@ -56,6 +57,12 @@ class _HomePageActionState extends State<HomePageAction>
     imageRotater.stopRotation();
   }
 
+  @override
+  void dispose() {
+    imageRotater.dispose();
+    super.dispose();
+  }
+
   bool getActiveState() => _active;
 
 
@@ -101,15 +108,12 @@ class _HomePageActionState extends State<HomePageAction>
         ),
         body: Center(
             child: GestureDetector(
-          onTap: () {
+          onTap: () async {
             imageRotater.startRotation();
-            final assetsAudioPlayer = AssetsAudioPlayer();
-            assetsAudioPlayer.open(Audio(Sounds.returnRandomSoundPath()),
-                autoStart: true);
-
+            final assetsAudioPlayer = SoundPlayer();
+            assetsAudioPlayer.playSound();
             activeSoundStatus(true);
-
-            assetsAudioPlayer.playlistFinished.listen((finished) {
+            assetsAudioPlayer.isFinished.listen((finished) {
               if (finished) {
                 print('stopped playing');
                 imageRotater.stopRotation();
