@@ -2,12 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_leo/app/sign_in/email_sign_in.dart';
 import 'package:flutter_leo/app/sign_in/sign_in_button.dart';
-import 'package:flutter_leo/common_widgets/platform_alert_dialog.dart';
 import 'package:flutter_leo/common_widgets/platform_exception_alert_dialog.dart';
 import 'package:flutter_leo/services/auth.dart';
 import 'package:provider/provider.dart';
 
-class SignInPage extends StatelessWidget {
+class SignInPage extends StatefulWidget {
+
+  @override
+  _SignInPageState createState() => _SignInPageState();
+}
+
+class _SignInPageState extends State<SignInPage> {
+  bool _isLoading = false;
 
   void _showSignInError(BuildContext context, PlatformException exception) {
     PlatformExceptionAlertDialog(
@@ -18,21 +24,35 @@ class SignInPage extends StatelessWidget {
 
   Future<void> _signInAnon(BuildContext context) async {
     try {
+      setState(() {
+        _isLoading = true;
+      });
       final auth = Provider.of<AuthBase>(context, listen: false);
       await auth.signInAnon();
     } on PlatformException catch (e) {
       _showSignInError(context, e);
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
     }
   }
 
   Future<void> _signInWithGoogle(BuildContext context) async {
     final auth = Provider.of<AuthBase>(context, listen: false);
     try {
+      setState(() {
+        _isLoading = true;
+      });
       await auth.signInWithGoogle();
     } on PlatformException catch (e) {
       if (e.code != 'ERROR_ABORTED_BY_USER') {
         _showSignInError(context, e);
       }
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
     }
   }
 
@@ -66,27 +86,23 @@ class SignInPage extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: <Widget>[
                     SizedBox(height:100),
-                    Text(
-                        'Sign In',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: 32.0,
-                          color: Colors.white,
-                        )
+                    SizedBox(
+                      height: 50.0,
+                      child: _buildHeader(),
                     ),
                     SizedBox(height: 50),
                     SignInButton(
                       text: 'Sign in With Google',
                       color: Colors.pink[100],
                       textColor: Colors.black87,
-                      onPressed: () => _signInWithGoogle(context),
+                      onPressed: _isLoading ? null : () => _signInWithGoogle(context),
                     ),
                     SizedBox(height: 10),
                     SignInButton(
                       text: 'Sign in With Email',
                       color: Colors.yellow[100],
                       textColor: Colors.black87,
-                      onPressed: () => _signInWithEmail(context),
+                      onPressed: _isLoading ? null : () => _signInWithEmail(context),
                     ),
                     SizedBox(height: 10),
                     Text(
@@ -102,7 +118,7 @@ class SignInPage extends StatelessWidget {
                       text: 'Go anonoymous',
                       color: Colors.green[100],
                       textColor: Colors.black87,
-                      onPressed: () => _signInAnon(context),
+                      onPressed: _isLoading ? null : () => _signInAnon(context),
                     ),
                   ],
                 ),
@@ -129,6 +145,22 @@ class SignInPage extends StatelessWidget {
               ),
             ],
           ),
+        )
+    );
+  }
+
+  Widget _buildHeader() {
+    if (_isLoading) {
+      return Center(
+        child: CircularProgressIndicator()
+      );
+    }
+    return Text(
+        'Sign In',
+        textAlign: TextAlign.center,
+        style: TextStyle(
+          fontSize: 32.0,
+          color: Colors.white,
         )
     );
   }

@@ -21,7 +21,6 @@ class HomePageAction extends StatefulWidget {
     }
   }
 
-
   Future<void> _confirmSignOut(BuildContext context) async {
     final didRequestSignOut = await PlatformAlertDialog(
       title: 'Logout',
@@ -46,8 +45,10 @@ class _HomePageActionState extends State<HomePageAction>
   @override
   void initState() {
     animationController =
-        AnimationController(vsync: this, duration: Duration(seconds: 2))
-          ..repeat();
+        AnimationController(
+            vsync: this,
+            duration: Duration(seconds: 2)
+        )..repeat();
 
     super.initState();
     stopRotation();
@@ -65,7 +66,7 @@ class _HomePageActionState extends State<HomePageAction>
     super.dispose();
   }
 
-  String _img = 'assets/images/make_sound_normal.png';
+  String _img = 'assets/images/cat_normal.png';
   bool _active = false;
 
   void activeSoundStatus(bool isPlaying) {
@@ -73,11 +74,12 @@ class _HomePageActionState extends State<HomePageAction>
 
     switch (isPlaying) {
       case true:
-        file = 'assets/images/make_sound_active.png';
+      //file = 'assets/images/cat_active.png';
+        file = 'assets/images/cat_normal.png'; //@TODO: change back to active
         active = true;
         break;
       case false:
-        file = 'assets/images/make_sound_normal.png';
+        file = 'assets/images/cat_normal.png';
         active = false;
         break;
     }
@@ -87,34 +89,6 @@ class _HomePageActionState extends State<HomePageAction>
       _active = active;
     });
   }
-
-  // AlertDialog tmpFunction() {
-  //   print('Function Called.');
-  //
-  //   return AlertDialog(
-  //     title: Text('AlertDialog Title'),
-  //     content: SingleChildScrollView(
-  //       child: ListBody(
-  //         children: <Widget>[
-  //           Text('This is a demo alert dialog.'),
-  //         ],
-  //       ),
-  //     ),
-  //   );
-  // }
-
-  // Future<File> readCounter() async {
-  //   try {
-  //     final File file = await FilePicker.getFile();
-  //
-  //     return file;
-  //   } catch (e) {
-  //     // If encountering an error, return 0.
-  //     print(e);
-  //     //return 0;
-  //   }
-  // }
-
 
   @override
   Widget build(BuildContext context) {
@@ -139,6 +113,7 @@ class _HomePageActionState extends State<HomePageAction>
             child: GestureDetector(
           onTap: () {
             print('tapped');
+            startRotation();
             final assetsAudioPlayer = AssetsAudioPlayer();
             assetsAudioPlayer.open(Audio(Sounds.returnRandomSoundPath()),
                 autoStart: true);
@@ -147,6 +122,7 @@ class _HomePageActionState extends State<HomePageAction>
 
             assetsAudioPlayer.playlistFinished.listen((finished) {
               if (finished) {
+                print('stopped playing');
                 stopRotation();
                 return activeSoundStatus(false);
               }
@@ -156,7 +132,6 @@ class _HomePageActionState extends State<HomePageAction>
             //   _duration = current.audio.duration.inSeconds;
             //   print(_duration);
             // });
-            startRotation();
           }, // onTap
           child: AnimatedBuilder(
             animation: animationController,
@@ -172,7 +147,7 @@ class _HomePageActionState extends State<HomePageAction>
             child: Image.asset(
               //@TODO move to method
               _img,
-              width: 250,
+              width: 280,
               fit: BoxFit.cover,
             ),
           ),
