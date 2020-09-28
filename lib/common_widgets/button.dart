@@ -19,15 +19,16 @@ class CustomRaisedButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: this.height,
+      height: height,
         child: RaisedButton(
-          child: this.child,
-          onPressed: this.onPressed,
-          color: this.color,
-          elevation: this.elevation,
+          child: child,
+          onPressed: onPressed,
+          color: color,
+          disabledColor: color,
+          elevation: elevation,
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.all(
-                Radius.circular(this.borderRadius),
+                Radius.circular(borderRadius),
               )
           ),
         )

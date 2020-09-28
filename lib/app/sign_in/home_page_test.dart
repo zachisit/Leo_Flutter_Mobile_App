@@ -1,5 +1,7 @@
 import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_leo/app/sound_player.dart';
+import 'package:flutter_leo/common_widgets/image_animator.dart';
 import 'package:flutter_leo/common_widgets/platform_alert_dialog.dart';
 import 'package:flutter_leo/services/auth.dart';
 import 'package:provider/provider.dart';
@@ -21,7 +23,6 @@ class HomePageAction extends StatefulWidget {
     }
   }
 
-
   Future<void> _confirmSignOut(BuildContext context) async {
     final didRequestSignOut = await PlatformAlertDialog(
       title: 'Logout',
@@ -41,43 +42,41 @@ class HomePageAction extends StatefulWidget {
 
 class _HomePageActionState extends State<HomePageAction>
     with SingleTickerProviderStateMixin {
-  AnimationController animationController;
+  ImageAnimation imageRotater;
+  String _img = 'assets/images/cat_normal.png';
+  bool _active = false;
 
   @override
   void initState() {
-    animationController =
-        AnimationController(vsync: this, duration: Duration(seconds: 2))
-          ..repeat();
+    imageRotater =
+        ImageAnimation(
+            vsync: this,
+        )..repeat();
 
     super.initState();
-    stopRotation();
+    imageRotater.stopRotation();
   }
-
-  void stopRotation() => animationController.stop();
-
-  void startRotation() => animationController.repeat();
-
-  bool getActiveState() => _active;
 
   @override
   void dispose() {
-    animationController.dispose();
+    imageRotater.dispose();
     super.dispose();
   }
 
-  String _img = 'assets/images/make_sound_normal.png';
-  bool _active = false;
+  bool getActiveState() => _active;
+
 
   void activeSoundStatus(bool isPlaying) {
     var file, active;
 
     switch (isPlaying) {
       case true:
-        file = 'assets/images/make_sound_active.png';
+      //file = 'assets/images/cat_active.png';
+        file = 'assets/images/cat_normal.png'; //@TODO: change back to active
         active = true;
         break;
       case false:
-        file = 'assets/images/make_sound_normal.png';
+        file = 'assets/images/cat_normal.png';
         active = false;
         break;
     }
@@ -87,34 +86,6 @@ class _HomePageActionState extends State<HomePageAction>
       _active = active;
     });
   }
-
-  // AlertDialog tmpFunction() {
-  //   print('Function Called.');
-  //
-  //   return AlertDialog(
-  //     title: Text('AlertDialog Title'),
-  //     content: SingleChildScrollView(
-  //       child: ListBody(
-  //         children: <Widget>[
-  //           Text('This is a demo alert dialog.'),
-  //         ],
-  //       ),
-  //     ),
-  //   );
-  // }
-
-  // Future<File> readCounter() async {
-  //   try {
-  //     final File file = await FilePicker.getFile();
-  //
-  //     return file;
-  //   } catch (e) {
-  //     // If encountering an error, return 0.
-  //     print(e);
-  //     //return 0;
-  //   }
-  // }
-
 
   @override
   Widget build(BuildContext context) {
@@ -137,17 +108,15 @@ class _HomePageActionState extends State<HomePageAction>
         ),
         body: Center(
             child: GestureDetector(
-          onTap: () {
-            print('tapped');
-            final assetsAudioPlayer = AssetsAudioPlayer();
-            assetsAudioPlayer.open(Audio(Sounds.returnRandomSoundPath()),
-                autoStart: true);
-
+          onTap: () async {
+            imageRotater.startRotation();
+            final assetsAudioPlayer = SoundPlayer();
+            assetsAudioPlayer.playSound();
             activeSoundStatus(true);
-
-            assetsAudioPlayer.playlistFinished.listen((finished) {
+            assetsAudioPlayer.isFinished.listen((finished) {
               if (finished) {
-                stopRotation();
+                print('stopped playing');
+                imageRotater.stopRotation();
                 return activeSoundStatus(false);
               }
             });
@@ -156,13 +125,12 @@ class _HomePageActionState extends State<HomePageAction>
             //   _duration = current.audio.duration.inSeconds;
             //   print(_duration);
             // });
-            startRotation();
           }, // onTap
           child: AnimatedBuilder(
-            animation: animationController,
+            animation: imageRotater,
             builder: (_, child) {
               var d = (getActiveState() != false)
-                  ? animationController.value * 2 * math.pi
+                  ? imageRotater.value * 2 * math.pi
                   : 0.0;
               return Transform.rotate(
                 angle: d,
@@ -172,7 +140,7 @@ class _HomePageActionState extends State<HomePageAction>
             child: Image.asset(
               //@TODO move to method
               _img,
-              width: 250,
+              width: 280,
               fit: BoxFit.cover,
             ),
           ),
