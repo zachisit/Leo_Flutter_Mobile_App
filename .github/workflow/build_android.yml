@@ -11,15 +11,21 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
-      # The flutter action needs java so include it
+      # we need java to build android apks
       - uses: actions/setup-java@v1
         with:
           java-version: '12.x'
-      # Include the flutter action
+      # this flutter action does the heavy lifting for us
       - uses: subosito/flutter-action@v1
         with:
           channel: 'stable'
-      # Get flutter packages
+      # get packages as you used to in your computer
       - run: flutter pub get
-      # Build :D
+      # Now build apk
       - run: flutter build apk --split-per-abi
+      # now relase the just created build
+      - name: Create a Release APK
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: "build/app/outputs/apk/release/*.apk"
+          token: ${{ secrets.MY_REPO_SECRET }}
