@@ -15,20 +15,29 @@ jobs:
       - name: Setup Java
         uses: actions/setup-java@v1
         with:
-          java-version: '12.x'
+          java-version: "12.x"
       - name: Setup Flutter
-      - uses: subosito/flutter-action@v1
-#        with:
-#          flutter-version: '1.7.8+hotfix.4'
+        uses: subosito/flutter-action@v1
+        with:
+          flutter-version: "1.17.5"
+
+#      - name: Decoding android/key.properties
+#        run: echo "${{ secrets.KEYPROP_PROD }}" | base64 --decode > android/key.properties
+#
+#      - name: Decoding android/neumodore_key.jks
+#        run: echo "${{ secrets.KEYJKS_PROD }}" | base64 --decode > android/key.jks
+
       - name: Pub Get Packages
-      - run: flutter pub get
-#      - run: flutter test
+        run: flutter pub get
+
       - name: Build APK
         run: flutter build apk --split-per-abi --release
-      - name: Build AppBundle
+
+      - name: Build APPBUNDLE
         run: flutter build appbundle --release
-      - name: Create GitHub Release
+
+      - name: Create Github Release
         uses: ncipollo/release-action@v1
         with:
-          artifacts: "build/app/outputs/apk/debug/*.apk"
+          artifacts: "build/app/outputs/apk/release/*.apk,build/app/outputs/bundle/release/*.aab"
           token: ${{ secrets.TOKEN }}
