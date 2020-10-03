@@ -39,5 +39,6 @@ jobs:
       - name: Create Github Release
         uses: ncipollo/release-action@v1
         with:
+          tag: "latest"
           artifacts: "build/app/outputs/apk/release/*.apk,build/app/outputs/bundle/release/*.aab"
           token: ${{ secrets.TOKEN }}
