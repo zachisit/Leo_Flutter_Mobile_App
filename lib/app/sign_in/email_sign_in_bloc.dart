@@ -14,7 +14,9 @@ class EmailSignInBloc {
 
   Future<void> submit() async {
     print('submit called');
-    print('email  $_model.email and password: $_model.password');
+    print(_model.password);
+    print(_model.email);
+    //print('email  $_model.email and password: $_model.password');
     updateWith(submitted: true, isLoading: true);
 
     try {

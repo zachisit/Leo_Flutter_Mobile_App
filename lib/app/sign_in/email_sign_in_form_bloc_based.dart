@@ -99,19 +99,19 @@ class _EmailSignInFormBlocBasedState extends State<EmailSignInFormBlocBased> {
         labelText: 'Password',
         errorText: model.passwordErrorText,
         enabled: model.isLoading == false,
-        // suffixIcon: GestureDetector(
-        //     onTap: () {
-        //       setState(() {
-        //         _showPassword = !_showPassword;
-        //       });
-        //     },
-        //     child: Icon(
-        //       _showPassword ? Icons.visibility : Icons.visibility_off,
-        //       color: Colors.grey,
-        //     )
-        // )
+        suffixIcon: GestureDetector(
+            onTap: () {
+              setState(() {
+                _showPassword = !_showPassword;
+              });
+            },
+            child: Icon(
+              _showPassword ? Icons.visibility : Icons.visibility_off,
+              color: Colors.grey,
+            )
+        )
       ),
-      obscureText: true,
+      obscureText: !_showPassword,
       textInputAction: TextInputAction.done,
       onEditingComplete: _submit,
       onChanged: widget.bloc.updatePassword,
@@ -132,7 +132,7 @@ class _EmailSignInFormBlocBasedState extends State<EmailSignInFormBlocBased> {
       keyboardType: TextInputType.emailAddress,
       textInputAction: TextInputAction.next,
       onEditingComplete: () => _emailEditingComplete(model),
-      onChanged: widget.bloc.updatePassword,
+      onChanged: widget.bloc.updateEmail,
     );
   }
 
