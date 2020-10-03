@@ -12,7 +12,10 @@ class NonEmptyStringValidator implements StringValidator {
 
   bool isValidEmail(String value) {
     //@TODO
+    return true;
   }
+
+  //@TODO strip empty spaces of email
 }
 
 class EmailAndPasswordValidators {

@@ -11,9 +11,7 @@ class SignInBloc {
 
   Stream<bool> get isLoadingStream => _isLoadingController.stream;
 
-  void dispose() {
-    _isLoadingController.close();
-  }
+  void dispose() => _isLoadingController.close();
 
   //add to sink of _isLoadingController
   void _setIsLoading(bool isLoading) => _isLoadingController.add(isLoading);

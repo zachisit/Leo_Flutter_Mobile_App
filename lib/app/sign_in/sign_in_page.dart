@@ -113,7 +113,7 @@ class SignInPage extends StatelessWidget {
                     ),
                     SizedBox(height: 10),
                     SignInButton(
-                      text: 'Go anonoymous',
+                      text: 'Go anonymous',
                       color: Colors.green[100],
                       textColor: Colors.black87,
                       onPressed: isLoading ? null : () => _signInAnon(context),
@@ -130,7 +130,7 @@ class SignInPage extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: <Widget>[
                     Text(
-                      'v1.0.325',
+                      'v1.0.327',
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: 13.0,
