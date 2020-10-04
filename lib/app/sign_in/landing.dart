@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_leo/app/sign_in/home_page_test.dart';
+import 'package:flutter_leo/app/sign_in/home_page.dart';
 import 'package:flutter_leo/app/sign_in/sign_in_page.dart';
 import 'package:flutter_leo/services/auth.dart';
 import 'package:flutter_leo/user/user.dart';
@@ -30,9 +30,10 @@ class LandingPageState extends StatelessWidget {
             // first value, or received
             // an error
             return Scaffold(
-                body: Center(
-              child: CircularProgressIndicator(),
-            ));
+              body: Center(
+                  child: CircularProgressIndicator(),
+              ),
+            );
           }
         });
   }
