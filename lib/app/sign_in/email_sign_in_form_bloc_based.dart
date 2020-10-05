@@ -85,7 +85,7 @@ class _EmailSignInFormBlocBasedState extends State<EmailSignInFormBlocBased> {
         onPressed: model.canSubmit ? _submit : null,
       ),
       FlatButton(
-        onPressed: !model.isLoading ? () =>  _toggleFormType : null,
+        onPressed: !model.isLoading ? _toggleFormType : null,
         child: Text(model.secondaryButtonText),
       ),
     ];
