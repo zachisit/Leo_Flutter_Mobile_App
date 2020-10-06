@@ -65,7 +65,6 @@ class _EmailSignInFormChangeNotifierState extends State<EmailSignInFormChangeNot
   }
 
   void _toggleFormType() {
-    print('hi');
     model.toggleFormType();
     _emailController.clear();
     _passwordController.clear();
@@ -86,7 +85,7 @@ class _EmailSignInFormChangeNotifierState extends State<EmailSignInFormChangeNot
         onPressed: model.canSubmit ? _submit : null,
       ),
       FlatButton(
-        onPressed: !model.isLoading ? () =>  _toggleFormType : null,
+        onPressed: !model.isLoading ? _toggleFormType : null,
         child: Text(model.secondaryButtonText),
       ),
     ];

@@ -1,7 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_leo/app/utility/validators.dart';
 import 'package:flutter_leo/services/auth.dart';
-import 'email_sign_in_model.dart';
+
+enum EmailSignInFormType { signIn, register }
 
 class EmailSignInChangeModel with EmailAndPasswordValidators, ChangeNotifier {
   EmailSignInChangeModel({
@@ -20,7 +21,6 @@ class EmailSignInChangeModel with EmailAndPasswordValidators, ChangeNotifier {
   bool submitted;
 
   Future<void> submit() async {
-    print('submit ->');
     updateWith(submitted: true, isLoading: true);
 
     try {
@@ -71,7 +71,6 @@ class EmailSignInChangeModel with EmailAndPasswordValidators, ChangeNotifier {
   void updatePassword(String password) => updateWith(password: password);
 
   void toggleFormType() {
-    print('here');
     final formType = this.formType == EmailSignInFormType.signIn
         ? EmailSignInFormType.register
         : EmailSignInFormType.signIn;

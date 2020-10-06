@@ -135,7 +135,7 @@ class SignInPage extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: <Widget>[
                     Text(
-                      'v1.0.331',
+                      'v1.0.332',
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: 13.0,
