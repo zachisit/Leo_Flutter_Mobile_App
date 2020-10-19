@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_leo/app/image_action_provider.dart';
 import 'package:flutter_leo/app/sound_player.dart';
 import 'package:flutter_leo/common_widgets/image_animator.dart';
 import 'package:flutter_leo/common_widgets/platform_alert_dialog.dart';
@@ -7,7 +8,6 @@ import 'package:provider/provider.dart';
 import 'dart:math' as math;
 
 class HomePageAction extends StatefulWidget {
-
   Future<void> _signOut(BuildContext context) async {
     try {
       final auth = Provider.of<AuthBase>(context, listen: false);
@@ -41,15 +41,12 @@ class HomePageAction extends StatefulWidget {
 class _HomePageActionState extends State<HomePageAction>
     with SingleTickerProviderStateMixin {
   ImageAnimation imageRotater;
-  String _img = 'assets/images/cat_normal.png';
-  bool _active = false;
 
   @override
   void initState() {
-    imageRotater =
-        ImageAnimation(
-            vsync: this,
-        )..repeat();
+    imageRotater = ImageAnimation(
+      vsync: this,
+    )..repeat();
 
     super.initState();
     imageRotater.stopRotation();
@@ -61,89 +58,58 @@ class _HomePageActionState extends State<HomePageAction>
     super.dispose();
   }
 
-  bool getActiveState() => _active;
-
-
-  void activeSoundStatus(bool isPlaying) {
-    var file, active;
-
-    switch (isPlaying) {
-      case true:
-      //file = 'assets/images/cat_active.png';
-        file = 'assets/images/cat_normal.png'; //@TODO: change back to active
-        active = true;
-        break;
-      case false:
-        file = 'assets/images/cat_normal.png';
-        active = false;
-        break;
-    }
-
-    setState(() {
-      _img = file;
-      _active = active;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
+    final imageProvider = Provider.of<ImageActionProvider>(context);
+
     return Scaffold(
-        backgroundColor: Colors.indigo,
-        appBar: AppBar(
-          //title: Text('Home Page'),
-          backgroundColor: Colors.pink[100],
-          actions: <Widget>[
-            FlatButton(
-                onPressed: () => widget._confirmSignOut(context),
-                child: Text('Log Out',
-                    style: TextStyle(
-                      fontSize: 18.0,
-                      color: Colors.black54,
-                    )
-                )
-            )
-          ],
-        ),
-        body: Center(
-            child: GestureDetector(
+      backgroundColor: Colors.indigo,
+      appBar: AppBar(
+        //title: Text('Home Page'),
+        backgroundColor: Colors.pink[100],
+        actions: <Widget>[
+          FlatButton(
+              onPressed: () => widget._confirmSignOut(context),
+              child: Text('Log Out',
+                  style: TextStyle(
+                    fontSize: 18.0,
+                    color: Colors.black54,
+                  )))
+        ],
+      ),
+      body: Center(
+        child: GestureDetector(
           onTap: () async {
             imageRotater.startRotation();
             final assetsAudioPlayer = SoundPlayer();
             assetsAudioPlayer.playSound();
-            activeSoundStatus(true);
+            imageProvider.setPlayingStatus(true);
             assetsAudioPlayer.isFinished.listen((finished) {
               if (finished) {
                 print('stopped playing');
                 imageRotater.stopRotation();
-                return activeSoundStatus(false);
+                imageProvider.setPlayingStatus(false);
               }
             });
-
-            // assetsAudioPlayer.current.listen((current) {
-            //   _duration = current.audio.duration.inSeconds;
-            //   print(_duration);
-            // });
           }, // onTap
           child: AnimatedBuilder(
             animation: imageRotater,
             builder: (_, child) {
-              var d = (getActiveState() != false)
-                  ? imageRotater.value * 2 * math.pi
-                  : 0.0;
               return Transform.rotate(
-                angle: d,
+                angle: (imageProvider.isPlayingStatus != false)
+                    ? imageRotater.value * 2 * math.pi
+                    : 0.0,
                 child: child,
               );
             },
             child: Image.asset(
-              //@TODO move to method
-              _img,
+              imageProvider.image,
               width: 280,
               fit: BoxFit.cover,
             ),
           ),
-            ),
         ),
+      ),
     );
   }
 }
