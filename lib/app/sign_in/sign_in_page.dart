@@ -16,7 +16,6 @@ class SignInPage extends StatelessWidget {
   final SignInManager manager;
   final bool isLoading;
 
-
   static Widget create(BuildContext context) {
     final auth = Provider.of<AuthBase>(context);
     return ChangeNotifierProvider<ValueNotifier<bool>>(
@@ -26,9 +25,9 @@ class SignInPage extends StatelessWidget {
           create: (_) => SignInManager(auth: auth, isLoading: isLoading),
           child: Consumer<SignInManager>(
               builder: (context, manager, _) => SignInPage(
-              manager: manager,
-              isLoading: isLoading.value,)
-          ),
+                    manager: manager,
+                    isLoading: isLoading.value,
+                  )),
         ),
       ),
     );
@@ -60,18 +59,16 @@ class SignInPage extends StatelessWidget {
   }
 
   void _signInWithEmail(BuildContext context) {
-    Navigator.of(context).push(
-        MaterialPageRoute<void>(
-          fullscreenDialog: true,
-          builder: (context) => EmailSignInPage(),
-        )
-    );
+    Navigator.of(context).push(MaterialPageRoute<void>(
+      fullscreenDialog: true,
+      builder: (context) => EmailSignInPage(),
+    ));
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: _buildContent(context),
+      body: _buildContent(context),
     );
   }
 
@@ -84,11 +81,11 @@ class SignInPage extends StatelessWidget {
             children: <Widget>[
               Positioned(
                 top: 0,
-                width: MediaQuery.of(context).size.width*(90/100),
+                width: MediaQuery.of(context).size.width * (90 / 100),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: <Widget>[
-                    SizedBox(height:100),
+                    SizedBox(height: 100),
                     SizedBox(
                       height: 50.0,
                       child: _buildHeader(),
@@ -98,14 +95,16 @@ class SignInPage extends StatelessWidget {
                       text: 'Sign in With Google',
                       color: Colors.pink[100],
                       textColor: Colors.black87,
-                      onPressed: isLoading ? null : () => _signInWithGoogle(context),
+                      onPressed:
+                          isLoading ? null : () => _signInWithGoogle(context),
                     ),
                     SizedBox(height: 10),
                     SignInButton(
                       text: 'Sign in With Email',
                       color: Colors.yellow[100],
                       textColor: Colors.black87,
-                      onPressed: isLoading ? null : () => _signInWithEmail(context),
+                      onPressed:
+                          isLoading ? null : () => _signInWithEmail(context),
                     ),
                     SizedBox(height: 10),
                     Text(
@@ -127,15 +126,15 @@ class SignInPage extends StatelessWidget {
                 ),
               ),
               Positioned(
-                bottom:0,
-                width: MediaQuery.of(context).size.width*(90/100),
+                bottom: 0,
+                width: MediaQuery.of(context).size.width * (90 / 100),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisSize: MainAxisSize.max,
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: <Widget>[
                     Text(
-                      'v1.0.332',
+                      'v1.0.333',
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: 13.0,
@@ -148,23 +147,18 @@ class SignInPage extends StatelessWidget {
               ),
             ],
           ),
-        )
-    );
+        ));
   }
 
   Widget _buildHeader() {
     if (isLoading) {
-      return Center(
-        child: CircularProgressIndicator()
-      );
+      return Center(child: CircularProgressIndicator());
     }
-    return Text(
-        'Sign In',
+    return Text('Sign In',
         textAlign: TextAlign.center,
         style: TextStyle(
           fontSize: 32.0,
           color: Colors.white,
-        )
-    );
+        ));
   }
 }
